@@ -1,0 +1,41 @@
+:root {
+  --bg-primary: #14161A;
+  --bg-secondary: #1C1E22;
+  --bg-elevated: #24272D;
+  --accent-primary: #B5895C;
+  --accent-secondary: #B5895C;
+  --text-primary: #EDEAE5;
+  --text-secondary: #93908C;
+  --border: #2D3139;
+  --success: #5FA87A;
+  --font-display: var(--font-inter);
+  --font-body: var(--font-inter);
+}
+
+:root[data-theme="travels"] {
+  --bg-primary: #0E1116;
+  --bg-secondary: #161B22;
+  --bg-elevated: #1E2530;
+  --accent-primary: #E3A857;
+  --accent-secondary: #5B8AC4;
+  --text-primary: #F2EFEA;
+  --text-secondary: #9AA3AE;
+  --border: #2A3038;
+  --success: #5FA87A;
+  --font-display: var(--font-sora);
+  --font-body: var(--font-inter);
+}
+
+:root[data-theme="tailoring"] {
+  --bg-primary: #FBF6F0;
+  --bg-secondary: #F3EAE0;
+  --bg-elevated: #FFFFFF;
+  --accent-primary: #9C3D4E;
+  --accent-secondary: #C9A15A;
+  --text-primary: #2B2320;
+  --text-secondary: #7A6F65;
+  --border: #E4D6C8;
+  --success: #6B8F71;
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-work-sans);
+}
