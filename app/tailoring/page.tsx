@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Scissors, Sparkles, Ruler, Crown, Shirt, Layers, Palette } from "lucide-react";
 import BackToGateway from "@/components/shared/back-to-gateway";
 import ServiceCard from "@/components/shared/service-card";
+import GalleryGrid from "@/components/shared/gallery-grid";
 
 export default function TailoringLanding() {
   const services = [
@@ -116,6 +117,28 @@ export default function TailoringLanding() {
               />
             ))}
           </div>
+        </motion.div>
+
+        {/* Gallery Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-16"
+        >
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold mb-8 text-accent-primary">
+            Gallery
+          </h2>
+          <GalleryGrid
+            items={[
+              { src: "https://placehold.co/400x400", alt: "Bridal Blouse", width: 400, height: 400 },
+              { src: "https://placehold.co/400x500", alt: "Embroidery Detail", width: 400, height: 500 },
+              { src: "https://placehold.co/400x300", alt: "Custom Dress", width: 400, height: 300 },
+              { src: "https://placehold.co/400x600", alt: "Designer Suit", width: 400, height: 600 },
+              { src: "https://placehold.co/400x350", alt: "Fabric Selection", width: 400, height: 350 },
+              { src: "https://placehold.co/400x450", alt: "Artisan Stitching", width: 400, height: 450 },
+            ]}
+          />
         </motion.div>
       </div>
     </div>
