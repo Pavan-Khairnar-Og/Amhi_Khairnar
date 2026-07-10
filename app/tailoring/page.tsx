@@ -5,6 +5,7 @@ import { Scissors, Sparkles, Ruler, Crown, Shirt, Layers, Palette } from "lucide
 import BackToGateway from "@/components/shared/back-to-gateway";
 import ServiceCard from "@/components/shared/service-card";
 import GalleryGrid from "@/components/shared/gallery-grid";
+import ReviewCard from "@/components/shared/review-card";
 
 export default function TailoringLanding() {
   const services = [
@@ -139,6 +140,38 @@ export default function TailoringLanding() {
               { src: "https://placehold.co/400x450", alt: "Artisan Stitching", width: 400, height: 450 },
             ]}
           />
+        </motion.div>
+
+        {/* Reviews Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-16 mb-8"
+        >
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold mb-8 text-accent-primary">
+            Reviews
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ReviewCard
+              name="Sunita Rao"
+              rating={5}
+              date="1 week ago"
+              text="Absolutely loved the bridal blouse stitching! The embroidery details are stunning."
+            />
+            <ReviewCard
+              name="Anjali Nair"
+              rating={4}
+              date="3 weeks ago"
+              text="Great fitting for my designer dresses. Completed on time as promised."
+            />
+            <ReviewCard
+              name="Meera Joshi"
+              rating={5}
+              date="5 days ago"
+              text="Very professional boutique. The alterations made my old gowns fit like new again."
+            />
+          </div>
         </motion.div>
       </div>
     </div>

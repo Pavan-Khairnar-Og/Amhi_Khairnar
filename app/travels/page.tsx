@@ -5,6 +5,7 @@ import { Compass, Calendar, MapPin, Car, UserCheck, Plane, Binoculars, Route, Br
 import BackToGateway from "@/components/shared/back-to-gateway";
 import ServiceCard from "@/components/shared/service-card";
 import GalleryGrid from "@/components/shared/gallery-grid";
+import ReviewCard from "@/components/shared/review-card";
 
 export default function TravelsLanding() {
   const services = [
@@ -134,6 +135,38 @@ export default function TravelsLanding() {
               { src: "https://placehold.co/400x350", alt: "Happy Clients", width: 400, height: 350 },
             ]}
           />
+        </motion.div>
+
+        {/* Reviews Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-16 mb-8"
+        >
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold mb-8 text-accent-primary">
+            Reviews
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ReviewCard
+              name="Amit Sharma"
+              rating={5}
+              date="2 weeks ago"
+              text="Excellent service! The car was extremely clean and the driver was very professional."
+            />
+            <ReviewCard
+              name="Priya Patel"
+              rating={4}
+              date="1 month ago"
+              text="Very reliable airport transfers. Smooth booking process and on-time service."
+            />
+            <ReviewCard
+              name="Rajesh Kumar"
+              rating={5}
+              date="3 days ago"
+              text="Had an amazing family trip to the hills. The custom itinerary was perfect and relaxed."
+            />
+          </div>
         </motion.div>
       </div>
     </div>
