@@ -11,7 +11,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/shared/footer";
 
+import { useState } from "react";
+import { supabase } from "@/lib/supabase/client";
+
 export default function TailoringLanding() {
+  const [status, setStatus] = useState<{
+    type: "idle" | "submitting" | "success" | "error";
+    message: string;
+  }>({ type: "idle", message: "" });
+
   const services = [
     {
       icon: Sparkles,
@@ -50,12 +58,32 @@ export default function TailoringLanding() {
     },
   ];
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    // TODO Phase 8: wire to backend/API route
-    console.log("Contact form submitted:", data);
+    setStatus({ type: "submitting", message: "" });
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const name = formData.get("name") as string;
+    const phone = formData.get("phone") as string;
+    const message = formData.get("message") as string;
+
+    try {
+      const { error } = await supabase
+        .from("contact_submissions")
+        .insert([{ business: "tailoring", name, phone, message }]);
+
+      if (error) throw error;
+
+      setStatus({ type: "success", message: "Thank you! Your message has been sent successfully." });
+      form.reset();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to send message. Please try again later.";
+      setStatus({
+        type: "error",
+        message: errorMessage,
+      });
+    }
   };
 
   return (
@@ -254,8 +282,23 @@ export default function TailoringLanding() {
                 <Textarea id="message" name="message" placeholder="Your Message" required className="min-h-[120px]" />
               </div>
 
-              <Button type="submit" className="w-full bg-accent-primary text-bg-primary hover:bg-accent-primary/90 font-bold h-10 rounded-lg cursor-pointer transition-colors duration-200">
-                Send Message
+              {status.type === "success" && (
+                <div className="text-sm text-green-500 font-medium bg-green-500/10 border border-green-500/20 rounded-lg p-3">
+                  {status.message}
+                </div>
+              )}
+              {status.type === "error" && (
+                <div className="text-sm text-red-500 font-medium bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                  {status.message}
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={status.type === "submitting"}
+                className="w-full bg-accent-primary text-bg-primary hover:bg-accent-primary/90 font-bold h-10 rounded-lg cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status.type === "submitting" ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>
