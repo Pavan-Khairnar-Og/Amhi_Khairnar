@@ -1,10 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Compass, Calendar, MapPin } from "lucide-react";
+import { Compass, Calendar, MapPin, Car, UserCheck, Plane, Binoculars, Route, Briefcase } from "lucide-react";
 import BackToGateway from "@/components/shared/back-to-gateway";
+import ServiceCard from "@/components/shared/service-card";
 
 export default function TravelsLanding() {
+  const services = [
+    {
+      icon: Car,
+      title: "Car Rentals",
+      description: "Wide range of clean, well-maintained vehicles for self-drive or chauffeur-driven options.",
+    },
+    {
+      icon: UserCheck,
+      title: "Driver on Hire",
+      description: "Professional, experienced, and verified drivers available for your personal trips.",
+    },
+    {
+      icon: Plane,
+      title: "Airport Transfers",
+      description: "Timely and hassle-free pickup and drop services to ensure you never miss a flight.",
+    },
+    {
+      icon: Binoculars,
+      title: "Local Sightseeing",
+      description: "Curated tours to experience local culture, landmarks, and hidden gems.",
+    },
+    {
+      icon: Route,
+      title: "Outstation Trips",
+      description: "Comfortable and safe long-distance travel options for weekend getaways and vacations.",
+    },
+    {
+      icon: Briefcase,
+      title: "Corporate Travel",
+      description: "Tailored travel solutions, billing, and dedicated support for business travelers.",
+    },
+  ];
+
   return (
     <div className="relative min-h-screen w-full bg-bg-primary text-text-primary flex flex-col p-6 md:p-12 font-body">
       {/* Background glow */}
@@ -54,6 +88,28 @@ export default function TravelsLanding() {
             <p className="text-sm text-text-secondary">
               End-to-end booking for flights, resorts, transfers, and exclusive VIP tours.
             </p>
+          </div>
+        </motion.div>
+
+        {/* Services Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-16"
+        >
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold mb-8 text-text-primary">
+            Our Services
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((service, index) => (
+              <ServiceCard
+                key={index}
+                icon={service.icon}
+                title={service.title}
+                description={service.description}
+              />
+            ))}
           </div>
         </motion.div>
       </div>
