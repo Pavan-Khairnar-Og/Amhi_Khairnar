@@ -1,40 +1,120 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import LogoutButton from "@/components/shared/logout-button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Shield } from "lucide-react";
 
-import { motion } from "framer-motion";
-import { Shield, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+export const dynamic = "force-dynamic";
 
-export default function AdminDashboardPlaceholder() {
+interface Submission {
+  id: string;
+  business: "travels" | "tailoring";
+  name: string;
+  phone: string;
+  message: string;
+  created_at: string;
+}
+
+export default async function AdminDashboard() {
+  const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+  console.log("SERVER-SIDE USER:", JSON.stringify(user, null, 2));
+
+  const { data: submissions, error } = await supabase
+    .from("contact_submissions")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  console.log("SUBMISSIONS DATA:", JSON.stringify(submissions, null, 2));
+  console.log("SUBMISSIONS ERROR:", JSON.stringify(error, null, 2));
+
   return (
-    <div className="relative min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col p-6 md:p-12">
-      {/* Navigation */}
-      <nav className="z-10 mb-12">
-        <Link href="/" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to gateway</span>
-        </Link>
-      </nav>
+    <div className="relative min-h-screen w-full bg-bg-primary text-text-primary flex flex-col font-body">
+      {/* Background glow effects */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent-primary/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-secondary/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Placeholder content */}
-      <div className="z-10 flex flex-col items-center justify-center max-w-lg mx-auto my-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center"
-        >
-          <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-full mb-6">
-            <Shield className="w-12 h-12 text-zinc-500" />
-          </div>
-          <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-          <p className="text-zinc-500 font-light leading-relaxed mb-6">
-            This space is currently a placeholder for the administrative dashboard. Future updates will include analytics, booking systems, and studio inventory management.
+      {/* Header */}
+      <header className="z-10 border-b border-border bg-bg-secondary/30 backdrop-blur-xl px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Shield className="w-6 h-6 text-text-secondary" />
+          <span className="font-display font-extrabold tracking-tight text-lg">
+            Amhi Khairnar Admin
+          </span>
+        </div>
+        <LogoutButton />
+      </header>
+
+      {/* Main Content */}
+      <main className="z-10 flex-1 p-6 md:p-12 max-w-7xl mx-auto w-full">
+        <div className="mb-8">
+          <h2 className="text-3xl font-display font-extrabold tracking-tight text-text-primary mb-2">
+            Contact Submissions
+          </h2>
+          <p className="text-text-secondary text-sm font-light">
+            View all messages and inquiries submitted from the travels and tailoring portals.
           </p>
-          <div className="text-xs uppercase tracking-wider text-zinc-600 font-semibold px-3 py-1 rounded bg-zinc-900 border border-zinc-800">
-            Scaffolding Active
+        </div>
+
+        {error ? (
+          <div className="text-sm text-destructive font-medium bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+            Failed to load contact submissions: {error.message}
           </div>
-        </motion.div>
-      </div>
+        ) : !submissions || submissions.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 border border-border bg-bg-secondary/20 rounded-2xl">
+            <p className="text-text-secondary text-sm font-light">No submissions yet</p>
+          </div>
+        ) : (
+          <div className="border border-border bg-bg-secondary/20 rounded-2xl overflow-hidden backdrop-blur-md">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-border hover:bg-transparent">
+                  <TableHead className="text-text-secondary font-semibold">Date</TableHead>
+                  <TableHead className="text-text-secondary font-semibold">Business</TableHead>
+                  <TableHead className="text-text-secondary font-semibold">Name</TableHead>
+                  <TableHead className="text-text-secondary font-semibold">Phone</TableHead>
+                  <TableHead className="text-text-secondary font-semibold">Message</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {submissions.map((submission: Submission) => (
+                  <TableRow key={submission.id} className="border-border hover:bg-bg-secondary/30">
+                    <TableCell className="font-medium">
+                      {new Date(submission.created_at).toLocaleString("en-IN", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {submission.business === "travels" ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                          Travels
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/10 text-rose-500 border border-rose-500/20">
+                          Tailoring
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell className="font-medium">{submission.name}</TableCell>
+                    <TableCell>{submission.phone}</TableCell>
+                    <TableCell className="whitespace-pre-wrap max-w-md text-text-secondary font-light">
+                      {submission.message}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
