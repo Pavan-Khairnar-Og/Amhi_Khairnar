@@ -1,11 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Compass, Calendar, MapPin, Car, UserCheck, Plane, Binoculars, Route, Briefcase } from "lucide-react";
+import { Compass, Calendar, MapPin, Car, UserCheck, Plane, Binoculars, Route, Briefcase, Phone, Mail } from "lucide-react";
 import BackToGateway from "@/components/shared/back-to-gateway";
 import ServiceCard from "@/components/shared/service-card";
 import GalleryGrid from "@/components/shared/gallery-grid";
 import ReviewCard from "@/components/shared/review-card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import Footer from "@/components/shared/footer";
 
 export default function TravelsLanding() {
   const services = [
@@ -40,6 +44,14 @@ export default function TravelsLanding() {
       description: "Tailored travel solutions, billing, and dedicated support for business travelers.",
     },
   ];
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    // TODO Phase 8: wire to backend/API route
+    console.log("Contact form submitted:", data);
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-bg-primary text-text-primary flex flex-col p-6 md:p-12 font-body">
@@ -168,6 +180,84 @@ export default function TravelsLanding() {
             />
           </div>
         </motion.div>
+
+        {/* Contact Us Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="mt-16"
+        >
+          <h2 className="text-2xl md:text-3xl font-display font-extrabold mb-8 text-accent-primary">
+            Contact Us
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-bg-secondary/20 border border-border rounded-2xl p-8 md:p-12 backdrop-blur">
+            {/* Left side: Info */}
+            <div className="flex flex-col justify-between space-y-8">
+              <div>
+                <h3 className="text-xl font-display font-bold text-text-primary mb-4">
+                  Get in Touch
+                </h3>
+                <p className="text-sm text-text-secondary leading-relaxed max-w-sm">
+                  Have questions or want to customize your tour? Send us a message and our team will get back to you within 24 hours.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-lg bg-accent-primary/10 text-accent-primary">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-text-secondary">Call Us</p>
+                    <p className="text-sm font-semibold text-text-primary">+91 98765 43210</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-lg bg-accent-primary/10 text-accent-primary">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-text-secondary">Email Us</p>
+                    <p className="text-sm font-semibold text-text-primary">travels@amhi-khairnar.com</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side: Form */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                  Name
+                </label>
+                <Input id="name" name="name" type="text" placeholder="Your Name" required />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                  Phone Number
+                </label>
+                <Input id="phone" name="phone" type="tel" placeholder="Your Phone Number" required />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                  Message
+                </label>
+                <Textarea id="message" name="message" placeholder="Your Message" required className="min-h-[120px]" />
+              </div>
+
+              <Button type="submit" className="w-full bg-accent-primary text-bg-primary hover:bg-accent-primary/90 font-bold h-10 rounded-lg cursor-pointer transition-colors duration-200">
+                Send Message
+              </Button>
+            </form>
+          </div>
+        </motion.div>
+
+        {/* Footer */}
+        <Footer businessName="Amhi Khairnar Travels & Tours" />
       </div>
     </div>
   );
