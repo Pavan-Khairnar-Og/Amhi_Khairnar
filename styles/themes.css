@@ -12,7 +12,7 @@
   --font-body: var(--font-inter);
 }
 
-:root[data-theme="travels"] {
+[data-theme="travels"] {
   --bg-primary: #0E1116;
   --bg-secondary: #161B22;
   --bg-elevated: #1E2530;
@@ -26,7 +26,7 @@
   --font-body: var(--font-inter);
 }
 
-:root[data-theme="tailoring"] {
+[data-theme="tailoring"] {
   --bg-primary: #FBF6F0;
   --bg-secondary: #F3EAE0;
   --bg-elevated: #FFFFFF;
@@ -39,3 +39,4 @@
   --font-display: var(--font-fraunces);
   --font-body: var(--font-work-sans);
 }
+
